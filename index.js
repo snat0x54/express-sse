@@ -65,10 +65,9 @@ class SSE extends EventEmitter {
       }
       if (data.event) {
         res.write(`event: ${data.event}\n`);
-      }
-      
+      }   
       if(typeof data.data === 'function') {
-        res.write(`data: ${JSON.stringify(await data.data(req))}\n\n`);
+        res.write(`data: ${JSON.stringify(data.data(req))}\n\n`);
       }
       else {
         res.write(`data: ${JSON.stringify(data.data)}\n\n`);
