@@ -56,7 +56,7 @@ class SSE extends EventEmitter {
     // Increase number of event listeners on init
     this.setMaxListeners(this.getMaxListeners() + 2);
 
-    const dataListener = data => {
+    const dataListener = async(data) => {
       if (data.id) {
         res.write(`id: ${data.id}\n`);
       } else {
@@ -67,7 +67,10 @@ class SSE extends EventEmitter {
         res.write(`event: ${data.event}\n`);
       }   
       if(typeof data.data === 'function') {
-        res.write(`data: ${JSON.stringify(data.data(req))}\n\n`);
+        const json = await data.data(req)
+        if(json) {
+          res.write(`data: ${JSON.stringify(json)}\n\n`);
+        }
       }
       else {
         res.write(`data: ${JSON.stringify(data.data)}\n\n`);
